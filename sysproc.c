@@ -49,6 +49,18 @@ sys_getmypid(void){
 
 int
 sys_register_signal_handler(int signum, sighandler_t handler){
+  if(argint(0,&signum) < -1){
+    return -1;
+  }
+  if(argint(1,((int*)&handler)) < -1){
+    return -1;
+  }
+ 
+  if (signum == -1){
+    //return sig address
+  }
+
+  
   return 0;
 }
 
