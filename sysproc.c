@@ -6,6 +6,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+#include "signal.h"
 
 int
 sys_fork(void)
@@ -40,6 +41,20 @@ int
 sys_getpid(void)
 {
   return proc->pid;
+}
+int 
+sys_getmypid(void){
+  return proc->pid;
+}
+
+int
+sys_register_signal_handler(int signum, sighandler_t handler){
+  return 0;
+}
+
+int 
+sys_alarm(int signum, sighandler_t handler){
+  return 0;
 }
 
 int
