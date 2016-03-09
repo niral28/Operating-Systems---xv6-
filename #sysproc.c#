@@ -48,18 +48,19 @@ sys_getmypid(void){
 }
 
 int
-sys_register_signal_handler(void){ 
-
- int signum; 
- sighandler_t handler; 
+sys_register_signal_handler(void){
   
-if(argint(0,&signum) < -1){
+ if(argint(0,&signum) < -1){
     return -1;
   }
-  if(argint(1,((int*)&handler)) < 0){
+  if(argint(1,((int*)&handler)) < -1){
     return -1;
   }
- proc->sigHandlers[signum] = (uint) handler;
+ 
+  if (signum == -1){
+    //return sig address
+  }
+
   
   return 0;
 }

@@ -78,8 +78,23 @@ trap(struct trapframe *tf)
     lapiceoi();
     break;
   case T_DIVIDE :
-    cprintf("DIVIDE BY ZERO!!\n"); 
-    break;
+    if( proc->sigHandlers[SIGFPE] != -1){
+	uint old_eip= proc->tf->eip; 
+	 proc->tf->eip = proc->sigHandlers[SIGFPE];
+	siginfo_t info; 
+	info.signum = SIGFPE; 
+	int decr = sizeof(info); 
+	*((siginfo_t *) (proc->tf->esp - decr)) = info; 
+	decr += sizeof(proc->sigHandlers[SIGFPE]);       
+	*((uint*) (proc->tf->esp-decr)) = old_eip;
+	proc->tf->esp -=decr; 	
+	// signal_deliver(SIGFPE, proc->sighandler[SIGFPE]);
+      cprintf("DIVIDE BY ZERO!!\n");
+      break;   
+     } 
+	//maybe think about adding custom kill code
+   // 
+    
   //PAGEBREAK: 13
   default:
     if(proc == 0 || (tf->cs&3) == 0){

@@ -1,5 +1,7 @@
+#include "signal.h" 
 // Segments in proc->gdt.
 #define NSEGS     7
+
 
 // Per-CPU state
 struct cpu {
@@ -66,6 +68,7 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+  uint sigHandlers[2];
 };
 
 // Process memory is laid out contiguously, low addresses first:

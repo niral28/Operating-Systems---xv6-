@@ -36,7 +36,7 @@ allocproc(void)
 {
   struct proc *p;
   char *sp;
-
+  
   acquire(&ptable.lock);
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
     if(p->state == UNUSED)
@@ -69,7 +69,8 @@ found:
   p->context = (struct context*)sp;
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
-
+  p->sigHandlers[SIGFPE] = -1; 
+  p->sigHandlers[SIGALRM] = -1; 
   return p;
 }
 
@@ -462,4 +463,13 @@ procdump(void)
     }
     cprintf("\n");
   }
+  sighandler_t signal_register_handler(int signum, sighandler_t handler){
+    if(!proc){
+      return (sighandler_t) -1; 
+    }
+    sighandler_t prev = (sighandler_t)proc->sigHandlers[signum];
+   proc->sigHandlers[signum] = (uint) handler;
+    return prev; 
+  }
+
 }
