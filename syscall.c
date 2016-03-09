@@ -102,6 +102,7 @@ extern int sys_halt(void);
 extern int sys_getmypid(void);
 extern int sys_register_signal_handler(void);
 extern int sys_alarm(void);
+
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
 [SYS_exit]    sys_exit,
