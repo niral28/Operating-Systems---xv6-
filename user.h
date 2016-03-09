@@ -42,3 +42,4 @@ int atoi(const char*);
 int getmypid(void);
 int register_signal_handler(int, sighandler_t); 
 int alarm(int);
+int signal(int, sighandler_t);

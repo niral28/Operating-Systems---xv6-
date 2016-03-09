@@ -174,6 +174,7 @@ UPROGS=\
 	_zombie\
 	_shutdown\
         _testpid\
+	_signal\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
