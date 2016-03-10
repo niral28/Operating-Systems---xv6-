@@ -111,17 +111,19 @@ signal(int signum, sighandler_t handler){
   printf(1,"%d",z);
  */  
 
- return register_signal_handler(signum,handler, (uint)(void(*)(void)) trampoline );
+ return register_signal_handler(signum,handler, (uint)trampoline );
 } 
 
-void trampoline(void){
-	printf(1,"TRAMPOLINE!!");
-__asm__ ("movl 0x8(%ebp),%edx\n\t    movl 0xc(%ebp),%ecx\n\t  movl 0x10(%ebp),%eax\n\t add $0x14,%ebp\n\t movl %ebp,%esp\n\t ret\n\t");
-/* __asm__("trampoline:\n\t"
-	 "addl $0xC,%esp\n\t"
-	 "pop %edx\n\t"
-	 "pop %ecx\n\t"
-	 "pop %eax\n\t"
-	 "ret\n\t"); */
+int trampoline(void){
+	printf(1,"TRAMPOLINE!!\n");
+//__asm__ ("movl 0x8(%ebp),%edx\n\t    movl 0xc(%ebp),%ecx\n\t  movl 0x10(%ebp),%eax\n\t add $0x14,%ebp\n\t movl %ebp,%esp\n\t ret\n\t");
+ __asm__("addl $0xC,%esp\n\t"
+	"pop %edx\n\t"
+	"pop %eax\n\t" 
+	"pop %ecx\n\t"
+	"ret\n\t" ); 
+
+	return 0; 
+
 }
 

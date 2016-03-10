@@ -19,7 +19,7 @@ int main(void)
     ecx = 5;
 
     alarm(1);
-
+	
     while(!flag);
 
     if (ecx == 5)

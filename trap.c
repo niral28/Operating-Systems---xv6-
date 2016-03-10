@@ -56,7 +56,7 @@ trap(struct trapframe *tf)
     }
     lapiceoi();
     updateTicks();  
-  
+    //cprintf("In Alarm\n");
     break;
   case T_IRQ0 + IRQ_IDE:
     ideintr();
@@ -90,13 +90,19 @@ trap(struct trapframe *tf)
 	decr += sizeof(proc->sigHandlers[SIGFPE]);       
 	*((uint*) (proc->tf->esp-decr)) = old_eip;
 	proc->tf->esp -=decr;
-	/**( (uint*) (proc->tf->esp - 4)) = old_eip;
+	*( (uint*) (proc->tf->esp - 4)) = old_eip;
 	*( (uint*) (proc->tf->esp - 8)) = proc->tf->eax;
+	cprintf("eax: %d\n", proc->tf->eax); 
 	*( (uint*) (proc->tf->esp - 12)) = proc->tf->ecx;
+	cprintf("ecx: %d\n", proc->tf->ecx); 
 	*( (uint*) (proc->tf->esp - 16)) = proc->tf->edx;
-	*( (uint*) (proc->tf->esp - 20)) = (uint) &info;
+	cprintf("edx: %d\n", proc->tf->edx); 
+	*( (siginfo_t*) (proc->tf->esp - 20)) =info;
+	cprintf("info addr: %d\n", (uint)&info); 
 	*( (uint*) (proc->tf->esp - 24)) = proc->restore;
-	proc->tf->esp -= 24;*/	
+	cprintf("trampoline addr: %d\n", proc->restore); 
+	proc->tf->esp -= 24;
+	cprintf("esp: %d\n", proc->tf->esp); 
       //cprintf("DIVIDE BY ZERO!!\n");
       break;   
      } 
@@ -112,6 +118,7 @@ trap(struct trapframe *tf)
       panic("trap");
     }
     // In user space, assume process misbehaved.
+  //cprintf("here 3\n");
     cprintf("pid %d %s: trap %d err %d on cpu %d "
             "eip 0x%x addr 0x%x--kill proc\n",
             proc->pid, proc->name, tf->trapno, tf->err, cpu->id, tf->eip, 
@@ -135,7 +142,9 @@ trap(struct trapframe *tf)
 	//updateTicks(); 	
 	//cprintf("increment ticks! %d  alarm on at:%d\n", proc->numTicks, proc->alarmTicks); 	
  	if ( proc->numTicks >= proc->alarmTicks){
-		if(proc->sigHandlers[SIGALRM] == -1){		
+		cprintf("here:\n"); 
+		if(proc->sigHandlers[SIGALRM] == -1){	
+		cprintf("here 2:\n"); 	
 			cprintf("pid %d %s: trap %d err %d on cpu %d "
             	"eip 0x%x addr 0x%x--kill proc\n",
             	proc->pid, proc->name, tf->trapno, tf->err, cpu->id, tf->eip, 
@@ -148,11 +157,25 @@ trap(struct trapframe *tf)
 		 proc->tf->eip = proc->sigHandlers[SIGALRM];
 		siginfo_t info; 
 		info.signum = SIGALRM; 
-		int decr = sizeof(info); 
-		*((siginfo_t *) (proc->tf->esp - decr)) = info; 
-		decr += sizeof(proc->sigHandlers[SIGALRM]);       
-		*((uint*) (proc->tf->esp-decr)) = old_eip;
-		proc->tf->esp -=decr; 	
+		//int decr = sizeof(info); 
+		//*((siginfo_t *) (proc->tf->esp - decr)) = info; 
+		//decr += sizeof(proc->sigHandlers[SIGALRM]);       
+		//*((uint*) (proc->tf->esp-decr)) = old_eip;
+		//proc->tf->esp -=decr; 	
+	cprintf("starting editing:\n"); 
+        *( (uint*) (proc->tf->esp - 4)) = old_eip;
+	*( (uint*) (proc->tf->esp - 8)) = proc->tf->eax;
+	cprintf("eax: %d\n", proc->tf->eax); 
+	*( (uint*) (proc->tf->esp - 12)) = proc->tf->ecx;
+	cprintf("ecx: %d\n", proc->tf->ecx); 
+	*( (uint*) (proc->tf->esp - 16)) = proc->tf->edx;
+	cprintf("edx: %d\n", proc->tf->edx); 
+	*((siginfo_t*) (proc->tf->esp - 20)) = info;
+	cprintf("info addr: %d\n", (uint)&info); 
+	*( (uint*) (proc->tf->esp - 24)) = proc->restore;
+	cprintf("trampoline addr: %d\n", proc->restore); 
+	proc->tf->esp -= 24;
+	cprintf("esp: %d\n", proc->tf->esp); 
 
 		proc->numTicks =0; 
 		proc->alarmTicks=0; 	
