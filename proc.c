@@ -73,6 +73,7 @@ found:
   p->sigHandlers[SIGALRM] = -1; 
   p->numTicks = 0;
   p->alarmTicks= 0;
+  p->restore = -1;
   return p;
 }
 

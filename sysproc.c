@@ -52,13 +52,17 @@ sys_register_signal_handler(void){
 
  int signum; 
  sighandler_t handler; 
-  
+ uint trampoline;
 if(argint(0,&signum) < -1){
     return -1;
   }
   if(argint(1,((int*)&handler)) < 0){
     return -1;
   }
+  if(argint(1,((int*)&trampoline))<0){
+   return -1;  
+ }
+ proc->restore = trampoline;
  proc->sigHandlers[signum] = (uint) handler;
   
   return 0;

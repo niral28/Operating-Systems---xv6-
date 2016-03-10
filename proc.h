@@ -71,6 +71,7 @@ struct proc {
   uint sigHandlers[2];
   uint numTicks;
   uint alarmTicks; 
+  uint restore;
 };
 
 

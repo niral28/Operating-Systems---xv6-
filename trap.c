@@ -89,9 +89,15 @@ trap(struct trapframe *tf)
 	*((siginfo_t *) (proc->tf->esp - decr)) = info; 
 	decr += sizeof(proc->sigHandlers[SIGFPE]);       
 	*((uint*) (proc->tf->esp-decr)) = old_eip;
-	proc->tf->esp -=decr; 	
-	// signal_deliver(SIGFPE, proc->sighandler[SIGFPE]);
-      cprintf("DIVIDE BY ZERO!!\n");
+	proc->tf->esp -=decr;
+	/**( (uint*) (proc->tf->esp - 4)) = old_eip;
+	*( (uint*) (proc->tf->esp - 8)) = proc->tf->eax;
+	*( (uint*) (proc->tf->esp - 12)) = proc->tf->ecx;
+	*( (uint*) (proc->tf->esp - 16)) = proc->tf->edx;
+	*( (uint*) (proc->tf->esp - 20)) = (uint) &info;
+	*( (uint*) (proc->tf->esp - 24)) = proc->restore;
+	proc->tf->esp -= 24;*/	
+      //cprintf("DIVIDE BY ZERO!!\n");
       break;   
      } 
 	//maybe think about adding custom kill code
@@ -147,6 +153,7 @@ trap(struct trapframe *tf)
 		decr += sizeof(proc->sigHandlers[SIGALRM]);       
 		*((uint*) (proc->tf->esp-decr)) = old_eip;
 		proc->tf->esp -=decr; 	
+
 		proc->numTicks =0; 
 		proc->alarmTicks=0; 	
 	} 
