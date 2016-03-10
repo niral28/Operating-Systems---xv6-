@@ -5,6 +5,6 @@
 int
 main(int argc, char *argv[])
 {
-	printf(1, "%d", signal(0, 0));
+	printf(1, "hi %d\n", signal(0, 0));
 	exit();	
 }
