@@ -11,7 +11,6 @@ typedef void (*sighandler_t)(siginfo_t);
 #define SIGALRM 1 
 
 #endif
-#define XV6_SIGNAL
 
 // You should define anything signal related that needs to be shared between
 // kernel and userspace here
@@ -19,4 +18,3 @@ typedef void (*sighandler_t)(siginfo_t);
 // At a minimum you must define the signal constants themselves
 // as well as a sighandler_t type.
 
-#endif

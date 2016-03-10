@@ -105,9 +105,11 @@ memmove(void *vdst, void *vsrc, int n)
 }
 int
 signal(int signum, sighandler_t handler){
-  int x = 1; 
+ /* int x = 1; 
   int y =0;
   int z = x/y; 
   printf(1,"%d",z);
-  return register_signal_handler(signum,handler);
+ */  
+
+ return register_signal_handler(signum,handler);
 }

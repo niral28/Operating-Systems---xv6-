@@ -66,6 +66,11 @@ if(argint(0,&signum) < -1){
 
 int 
 sys_alarm(void){
+int secs;
+ if(argint(0,&secs)<0){
+ 	return -1;
+  }
+ proc->alarmTicks = 900*secs; 
   return 0;
 }
 

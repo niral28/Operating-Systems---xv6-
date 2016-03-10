@@ -71,6 +71,8 @@ found:
   p->context->eip = (uint)forkret;
   p->sigHandlers[SIGFPE] = -1; 
   p->sigHandlers[SIGALRM] = -1; 
+  p->numTicks = 0;
+  p->alarmTicks= 0;
   return p;
 }
 

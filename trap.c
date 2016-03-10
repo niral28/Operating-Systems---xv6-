@@ -55,6 +55,34 @@ trap(struct trapframe *tf)
       release(&tickslock);
     }
     lapiceoi();
+	    
+  if(proc && proc->alarmTicks >0){
+	proc->numTicks++;	
+	//cprintf("increment ticks! %d  alarm on at:%d\n", proc->numTicks, proc->alarmTicks); 	
+ 	if ( proc->numTicks >= proc->alarmTicks){
+		if(proc->sigHandlers[SIGALRM] == -1){		
+			cprintf("pid %d %s: trap %d err %d on cpu %d "
+            	"eip 0x%x addr 0x%x--kill proc\n",
+            	proc->pid, proc->name, tf->trapno, tf->err, cpu->id, tf->eip, 
+           	 rcr2());
+    		proc->killed = 1; 
+		exit(); 
+		}
+		//cprintf("changing trap frame"); 
+		uint old_eip= proc->tf->eip; 
+		 proc->tf->eip = proc->sigHandlers[SIGALRM];
+		siginfo_t info; 
+		info.signum = SIGALRM; 
+		int decr = sizeof(info); 
+		*((siginfo_t *) (proc->tf->esp - decr)) = info; 
+		decr += sizeof(proc->sigHandlers[SIGALRM]);       
+		*((uint*) (proc->tf->esp-decr)) = old_eip;
+		proc->tf->esp -=decr; 	
+		proc->numTicks =0; 
+		proc->alarmTicks=0;
+		break;   	
+	} 
+    }
     break;
   case T_IRQ0 + IRQ_IDE:
     ideintr();
