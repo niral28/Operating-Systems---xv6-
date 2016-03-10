@@ -70,8 +70,9 @@ int secs;
  if(argint(0,&secs)<0){
  	return -1;
   }
+ int prev = proc->alarmTicks;
  proc->alarmTicks = 900*secs; 
-  return 0;
+  return prev;
 }
 
 int

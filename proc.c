@@ -445,7 +445,7 @@ procdump(void)
   [RUNNABLE]  "runble",
   [RUNNING]   "run   ",
   [ZOMBIE]    "zombie"
-  };
+  }; // end char
   int i;
   struct proc *p;
   char *state;
@@ -463,16 +463,31 @@ procdump(void)
       getcallerpcs((uint*)p->context->ebp+2, pc);
       for(i=0; i<10 && pc[i] != 0; i++)
         cprintf(" %p", pc[i]);
-    }
+    } // end if
     cprintf("\n");
-  }
-  sighandler_t register_signal_handler(int signum, sighandler_t handler){
+  } // end for
+} // end procdump 
+
+  /*sighandler_t register_signal_handler(int signum, sighandler_t handler){
     if(!proc){
       return (sighandler_t) -1; 
     }
     sighandler_t prev = (sighandler_t)proc->sigHandlers[signum];
    proc->sigHandlers[signum] = (uint) handler;
     return prev; 
-  }
+  } // end sighandler t */
+ 
+  void updateTicks(){ // function used to update ticks
+    struct proc *p;
+	for(p= ptable.proc; p< &ptable.proc[NPROC]; p++){
+		if(p){
+		    if(p->alarmTicks != 0) {
+		    	p->numTicks++; 
+		    } //end inner if		
+		}// end outer if	
+	} // end for	
+   } // end method
+  
+ 
 
-}
+

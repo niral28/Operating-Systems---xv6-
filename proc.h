@@ -2,7 +2,7 @@
 // Segments in proc->gdt.
 #define NSEGS     7
 
-
+void updateTicks(void);
 // Per-CPU state
 struct cpu {
   uchar id;                    // Local APIC ID; index into cpus[] below
@@ -72,6 +72,7 @@ struct proc {
   uint numTicks;
   uint alarmTicks; 
 };
+
 
 // Process memory is laid out contiguously, low addresses first:
 //   text
