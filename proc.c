@@ -466,7 +466,7 @@ procdump(void)
     }
     cprintf("\n");
   }
-  sighandler_t signal_register_handler(int signum, sighandler_t handler){
+  sighandler_t register_signal_handler(int signum, sighandler_t handler){
     if(!proc){
       return (sighandler_t) -1; 
     }
