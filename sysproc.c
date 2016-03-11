@@ -59,7 +59,7 @@ if(argint(0,&signum) < -1){
   if(argint(1,((int*)&handler)) < 0){
     return -1;
   }
-  if(argint(1,((int*)&trampoline))<0){
+  if(argint(2,((int*)&trampoline))<0){
    return -1;  
  }
  proc->restore = trampoline;
