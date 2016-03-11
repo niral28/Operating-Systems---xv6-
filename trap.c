@@ -164,8 +164,8 @@ trap(struct trapframe *tf)
 		//*((uint*) (proc->tf->esp-decr)) = old_eip;
 		//proc->tf->esp -=decr; 	
 	//cprintf("starting editing:\n"); 
-        *( (uint*) (proc->tf->esp - 4)) = old_eip;
-	*( (uint*) (proc->tf->esp - 8)) = proc->tf->eax;
+        *( (uint*) (proc->tf->esp - 4)) = old_eip; // old instruction pointer added to the stack
+	*( (uint*) (proc->tf->esp - 8)) = proc->tf->eax; // put volatile registers onto the stack
 	//cprintf("eax: %d\n", proc->tf->eax); 
 	*( (uint*) (proc->tf->esp - 12)) = proc->tf->ecx;
 	//cprintf("ecx: %d\n", proc->tf->ecx); 
