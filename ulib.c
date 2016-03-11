@@ -124,7 +124,7 @@ __asm__ ("movl 0x8(%ebp),%edx\n\t    movl 0xc(%ebp),%ecx\n\t  movl 0x10(%ebp),%e
 	"pop %eax;"
 	"ret" ); */
 	
-printf(1,"At the end of trampoline\n");
+//printf(1,"At the end of trampoline\n");
 	//return 0; 
 
 }
