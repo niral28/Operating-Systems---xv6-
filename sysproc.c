@@ -64,7 +64,8 @@ if(argint(0,&signum) < -1){
  }
  proc->restore = trampoline;
  proc->sigHandlers[signum] = (uint) handler;
-  
+  cprintf("handler address: %d\n", &handler);
+  cprintf("handler: %d\n", handler);
   return 0;
 }
 

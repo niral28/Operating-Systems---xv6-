@@ -118,7 +118,7 @@ trap(struct trapframe *tf)
       panic("trap");
     }
     // In user space, assume process misbehaved.
-  //cprintf("here 3\n");
+  cprintf("here 3\n");
     cprintf("pid %d %s: trap %d err %d on cpu %d "
             "eip 0x%x addr 0x%x--kill proc\n",
             proc->pid, proc->name, tf->trapno, tf->err, cpu->id, tf->eip, 
@@ -155,6 +155,7 @@ trap(struct trapframe *tf)
 		//cprintf("changing trap frame"); 
 		uint old_eip= proc->tf->eip; 
 		 proc->tf->eip = proc->sigHandlers[SIGALRM];
+		cprintf("SIGALRM value: %d\n", &(proc->sigHandlers[SIGALRM]));
 		siginfo_t info; 
 		info.signum = SIGALRM; 
 		//int decr = sizeof(info); 
