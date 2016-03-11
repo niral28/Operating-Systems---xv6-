@@ -155,7 +155,7 @@ trap(struct trapframe *tf)
 		//cprintf("changing trap frame"); 
 		uint old_eip= proc->tf->eip; 
 		 proc->tf->eip = proc->sigHandlers[SIGALRM];
-		//cprintf("SIGALRM value: %d\n", &(proc->sigHandlers[SIGALRM]));
+		//cprintf("SIGALRM value: %d\n", (proc->sigHandlers[SIGALRM]));
 		siginfo_t info; 
 		info.signum = SIGALRM; 
 		//int decr = sizeof(info); 
