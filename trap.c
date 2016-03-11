@@ -91,7 +91,7 @@ trap(struct trapframe *tf)
 	*((uint*) (proc->tf->esp-decr)) = old_eip;
 	proc->tf->esp -=decr; 	
 	// signal_deliver(SIGFPE, proc->sighandler[SIGFPE]);
-      cprintf("DIVIDE BY ZERO!!\n");
+    //  cprintf("DIVIDE BY ZERO!!\n");
       break;   
      } 
 	//maybe think about adding custom kill code
