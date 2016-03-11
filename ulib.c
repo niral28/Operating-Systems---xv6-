@@ -115,7 +115,7 @@ signal(int signum, sighandler_t handler){
 } 
 
 void trampoline(void){
-	printf(1,"TRAMPOLINE!!\n");
+	//printf(1,"TRAMPOLINE!!\n");
 __asm__ ("movl 0x8(%ebp),%edx\n\t    movl 0xc(%ebp),%ecx\n\t  movl 0x10(%ebp),%eax\n\t add $0x14,%ebp\n\t movl %ebp,%esp\n\t ret\n\t");
  /*__asm__(
 	"add $8,%esp;"

@@ -92,17 +92,17 @@ trap(struct trapframe *tf)
 	proc->tf->esp -=decr;
 	*( (uint*) (proc->tf->esp - 4)) = old_eip;
 	*( (uint*) (proc->tf->esp - 8)) = proc->tf->eax;
-	cprintf("eax: %d\n", proc->tf->eax); 
+	//cprintf("eax: %d\n", proc->tf->eax); 
 	*( (uint*) (proc->tf->esp - 12)) = proc->tf->ecx;
-	cprintf("ecx: %d\n", proc->tf->ecx); 
+	//cprintf("ecx: %d\n", proc->tf->ecx); 
 	*( (uint*) (proc->tf->esp - 16)) = proc->tf->edx;
-	cprintf("edx: %d\n", proc->tf->edx); 
+	//cprintf("edx: %d\n", proc->tf->edx); 
 	*( (siginfo_t*) (proc->tf->esp - 20)) =info;
-	cprintf("info addr: %d\n", (uint)&info); 
+	//cprintf("info addr: %d\n", (uint)&info); 
 	*( (uint*) (proc->tf->esp - 24)) = proc->restore;
-	cprintf("trampoline addr: %d\n", proc->restore); 
+	//cprintf("trampoline addr: %d\n", proc->restore); 
 	proc->tf->esp -= 24;
-	cprintf("esp: %d\n", proc->tf->esp); 
+	//cprintf("esp: %d\n", proc->tf->esp); 
       //cprintf("DIVIDE BY ZERO!!\n");
       break;   
      } 
@@ -118,7 +118,7 @@ trap(struct trapframe *tf)
       panic("trap");
     }
     // In user space, assume process misbehaved.
-  cprintf("here 3\n");
+  //cprintf("here 3\n");
     cprintf("pid %d %s: trap %d err %d on cpu %d "
             "eip 0x%x addr 0x%x--kill proc\n",
             proc->pid, proc->name, tf->trapno, tf->err, cpu->id, tf->eip, 
@@ -142,9 +142,9 @@ trap(struct trapframe *tf)
 	//updateTicks(); 	
 	//cprintf("increment ticks! %d  alarm on at:%d\n", proc->numTicks, proc->alarmTicks); 	
  	if ( proc->numTicks >= proc->alarmTicks){
-		cprintf("here:\n"); 
+		//cprintf("here:\n"); 
 		if(proc->sigHandlers[SIGALRM] == -1){	
-		cprintf("here 2:\n"); 	
+		//cprintf("here 2:\n"); 	
 			cprintf("pid %d %s: trap %d err %d on cpu %d "
             	"eip 0x%x addr 0x%x--kill proc\n",
             	proc->pid, proc->name, tf->trapno, tf->err, cpu->id, tf->eip, 
@@ -155,7 +155,7 @@ trap(struct trapframe *tf)
 		//cprintf("changing trap frame"); 
 		uint old_eip= proc->tf->eip; 
 		 proc->tf->eip = proc->sigHandlers[SIGALRM];
-		cprintf("SIGALRM value: %d\n", &(proc->sigHandlers[SIGALRM]));
+		//cprintf("SIGALRM value: %d\n", &(proc->sigHandlers[SIGALRM]));
 		siginfo_t info; 
 		info.signum = SIGALRM; 
 		//int decr = sizeof(info); 
@@ -163,20 +163,20 @@ trap(struct trapframe *tf)
 		//decr += sizeof(proc->sigHandlers[SIGALRM]);       
 		//*((uint*) (proc->tf->esp-decr)) = old_eip;
 		//proc->tf->esp -=decr; 	
-	cprintf("starting editing:\n"); 
+	//cprintf("starting editing:\n"); 
         *( (uint*) (proc->tf->esp - 4)) = old_eip;
 	*( (uint*) (proc->tf->esp - 8)) = proc->tf->eax;
-	cprintf("eax: %d\n", proc->tf->eax); 
+	//cprintf("eax: %d\n", proc->tf->eax); 
 	*( (uint*) (proc->tf->esp - 12)) = proc->tf->ecx;
-	cprintf("ecx: %d\n", proc->tf->ecx); 
+	//cprintf("ecx: %d\n", proc->tf->ecx); 
 	*( (uint*) (proc->tf->esp - 16)) = proc->tf->edx;
-	cprintf("edx: %d\n", proc->tf->edx); 
+	//cprintf("edx: %d\n", proc->tf->edx); 
 	*((siginfo_t*) (proc->tf->esp - 20)) = info;
-	cprintf("info addr: %d\n", (uint)&info); 
+	//cprintf("info addr: %d\n", (uint)&info); 
 	*( (uint*) (proc->tf->esp - 24)) = proc->restore;
-	cprintf("trampoline addr: %d\n", proc->restore); 
+	//cprintf("trampoline addr: %d\n", proc->restore); 
 	proc->tf->esp -= 24;
-	cprintf("esp: %d\n", proc->tf->esp); 
+	//cprintf("esp: %d\n", proc->tf->esp); 
 
 		proc->numTicks =0; 
 		proc->alarmTicks=0; 	
