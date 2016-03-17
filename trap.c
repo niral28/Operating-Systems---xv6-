@@ -85,11 +85,11 @@ trap(struct trapframe *tf)
 	 proc->tf->eip = proc->sigHandlers[SIGFPE];
 	siginfo_t info; 
 	info.signum = SIGFPE; 
-	int decr = sizeof(info); 
-	*((siginfo_t *) (proc->tf->esp - decr)) = info; 
-	decr += sizeof(proc->sigHandlers[SIGFPE]);       
-	*((uint*) (proc->tf->esp-decr)) = old_eip;
-	proc->tf->esp -=decr;
+	//int decr = sizeof(info); 
+	//*((siginfo_t *) (proc->tf->esp - decr)) = info; 
+	//decr += sizeof(proc->sigHandlers[SIGFPE]);       
+	//*((uint*) (proc->tf->esp-decr)) = old_eip;
+	//proc->tf->esp -=decr;
 	*( (uint*) (proc->tf->esp - 4)) = old_eip;
 	*( (uint*) (proc->tf->esp - 8)) = proc->tf->eax;
 	//cprintf("eax: %d\n", proc->tf->eax); 
