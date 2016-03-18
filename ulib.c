@@ -115,7 +115,9 @@ signal(int signum, sighandler_t handler){
 } 
 
 void trampoline(void){
-	//printf(1,"TRAMPOLINE!!\n");
+  //printf(1,"TRAMPOLINE!!\n");
+        // register int eip asm ("%eip");
+        //  printf(1,"eip address:%d\n",eip);
 __asm__ ("movl 0x8(%ebp),%edx\n\t    movl 0xc(%ebp),%ecx\n\t  movl 0x10(%ebp),%eax\n\t add $0x14,%ebp\n\t movl %ebp,%esp\n\t ret\n\t");
 	//pops off the stack( in the reverse order it was pushed) 
  /*__asm__(

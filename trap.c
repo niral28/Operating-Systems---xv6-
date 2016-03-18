@@ -85,25 +85,25 @@ trap(struct trapframe *tf)
 	 proc->tf->eip = proc->sigHandlers[SIGFPE];
 	siginfo_t info; 
 	info.signum = SIGFPE; 
-	int decr = sizeof(info); 
-	*((siginfo_t *) (proc->tf->esp - decr)) = info; 
-	decr += sizeof(proc->sigHandlers[SIGFPE]);       
-	*((uint*) (proc->tf->esp-decr)) = old_eip;
-	proc->tf->esp -=decr;
+//	int decr = sizeof(info); 
+//	*((siginfo_t *) (proc->tf->esp - decr)) = info; 
+//	decr += sizeof(proc->sigHandlers[SIGFPE]);       
+//	*((uint*) (proc->tf->esp-decr)) = old_eip;
+//	proc->tf->esp -=decr;
 	*( (uint*) (proc->tf->esp - 4)) = old_eip;
 	*( (uint*) (proc->tf->esp - 8)) = proc->tf->eax;
-	//cprintf("eax: %d\n", proc->tf->eax); 
+//	cprintf("eax: %d\n", proc->tf->eax); 
 	*( (uint*) (proc->tf->esp - 12)) = proc->tf->ecx;
-	//cprintf("ecx: %d\n", proc->tf->ecx); 
+//	cprintf("ecx: %d\n", proc->tf->ecx); 
 	*( (uint*) (proc->tf->esp - 16)) = proc->tf->edx;
-	//cprintf("edx: %d\n", proc->tf->edx); 
+//	cprintf("edx: %d\n", proc->tf->edx); 
 	*( (siginfo_t*) (proc->tf->esp - 20)) =info;
-	//cprintf("info addr: %d\n", (uint)&info); 
+//	cprintf("info addr: %d\n", (uint)&info); 
 	*( (uint*) (proc->tf->esp - 24)) = proc->restore;
-	//cprintf("trampoline addr: %d\n", proc->restore); 
+//	cprintf("trampoline addr: %d\n", proc->restore); 
 	proc->tf->esp -= 24;
-	//cprintf("esp: %d\n", proc->tf->esp); 
-      //cprintf("DIVIDE BY ZERO!!\n");
+//	cprintf("esp: %d\n", proc->tf->esp); 
+        //            cprintf("DIVIDE BY ZERO!!\n");
       break;   
      } 
 	//maybe think about adding custom kill code
@@ -152,10 +152,10 @@ trap(struct trapframe *tf)
     		proc->killed = 1; 
 		exit(); 
 		}
-		//cprintf("changing trap frame"); 
+		cprintf("changing trap frame"); 
 		uint old_eip= proc->tf->eip; 
 		 proc->tf->eip = proc->sigHandlers[SIGALRM];
-		//cprintf("SIGALRM value: %d\n", &(proc->sigHandlers[SIGALRM]));
+		cprintf("SIGALRM value: %d\n", &(proc->sigHandlers[SIGALRM]));
 		siginfo_t info; 
 		info.signum = SIGALRM; 
 		//int decr = sizeof(info); 
@@ -163,21 +163,21 @@ trap(struct trapframe *tf)
 		//decr += sizeof(proc->sigHandlers[SIGALRM]);       
 		//*((uint*) (proc->tf->esp-decr)) = old_eip;
 		//proc->tf->esp -=decr; 	
-	//cprintf("starting editing:\n"); 
+	cprintf("starting editing:\n"); 
         *( (uint*) (proc->tf->esp - 4)) = old_eip; // old instruction pointer added to the stack
 	*( (uint*) (proc->tf->esp - 8)) = proc->tf->eax; // put volatile registers onto the stack
-	//cprintf("eax: %d\n", proc->tf->eax); 
+	cprintf("eax: %d\n", proc->tf->eax); 
 	*( (uint*) (proc->tf->esp - 12)) = proc->tf->ecx;
-	//cprintf("ecx: %d\n", proc->tf->ecx); 
+	cprintf("ecx: %d\n", proc->tf->ecx); 
 	*( (uint*) (proc->tf->esp - 16)) = proc->tf->edx;
-	//cprintf("edx: %d\n", proc->tf->edx); 
+	cprintf("edx: %d\n", proc->tf->edx); 
 	*((siginfo_t*) (proc->tf->esp - 20)) = info;
-	//cprintf("info addr: %d\n", (uint)&info); 
+	cprintf("info addr: %d\n", (uint)&info); 
 	*( (uint*) (proc->tf->esp - 24)) = proc->restore;
-	//cprintf("trampoline addr: %d\n", proc->restore); 
+	cprintf("trampoline addr: %d\n", proc->restore); 
 	proc->tf->esp -= 24;
-	//cprintf("esp: %d\n", proc->tf->esp); 
-
+	cprintf("esp: %d\n", proc->tf->esp); 
+        cprintf("eip:  %d\n", proc->tf->eip);
 		proc->numTicks =0; 
 		proc->alarmTicks=0; 	
 	} 
