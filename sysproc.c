@@ -81,6 +81,12 @@ int secs;
 }
 
 int
+sys_stopTraps(void){
+ proc->stopTraps=1; 
+return 0;
+}
+
+int
 sys_sbrk(void)
 {
   int addr;

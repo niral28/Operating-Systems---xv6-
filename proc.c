@@ -74,6 +74,7 @@ found:
   p->numTicks = 0;
   p->alarmTicks= 0;
   p->restore = -1;
+  p->stopTraps = 0;
   return p;
 }
 

@@ -7,14 +7,15 @@ static int numTraps=0;
 static int totalTrapTime=0;
 void handle_signal(siginfo_t info)
 {
-  //printf(1,"inside sig handler!\n");
+//  printf(1,"inside sig handler!\n");
  numTraps++;
  totalTrapTime+= uptime();
- if(totalTrapTime >= 10000){
-  printf(1,"Traps performed: %d\n",numTraps);
-  printf(1,"Total Elapsed Time %d:\n",totalTrapTime);
-  printf(1,"Average Time Per Trap %d\n");
- __asm__("subl $0x18,%ebp\n\t movl %ebp,%esp\n\t ret\n\t");
+ if(numTraps == 10000){
+   // printf(1,"Traps performed: %d\n",numTraps);
+   //printf(1,"Total Elapsed Time %d:\n",totalTrapTime);
+   //printf(1,"Average Time Per Trap %d\n");
+  stopTraps();
+// __asm__("subl $0x10,%ebp\n\t movl %ebp,%esp\n\t ret\n\t");
   return;
  }
 //printf(1,"finished\n");
@@ -28,9 +29,9 @@ int main(int argc, char *argv[])
         int y = 0;
         x = x/y;
         //  printf(1,"reached back to main\n");
-	printf(1, "Traps Performed: XXXX\n");
-	printf(1, "Total Elapsed Time: XXXX\n");
-	printf(1, "Average Time Per Trap: XXXXX\n");
+	printf(1, "Traps Performed: %d\n",numTraps);
+	printf(1, "Total Elapsed Time: %d\n",totalTrapTime*1000);
+	printf(1, "Average Time Per Trap: %d\n",(numTraps/(totalTrapTime*1000)));
 
 	exit();
 }

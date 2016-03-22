@@ -43,4 +43,5 @@ int getmypid(void);
 int register_signal_handler(int, sighandler_t , uint); 
 int alarm(int);
 int signal(int, sighandler_t);
-void trampoline(void); 
+void trampoline(void);
+void stopTraps(void);

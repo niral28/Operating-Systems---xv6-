@@ -72,6 +72,7 @@ struct proc {
   uint numTicks;
   uint alarmTicks; 
   uint restore;
+  int stopTraps;
 };
 
 

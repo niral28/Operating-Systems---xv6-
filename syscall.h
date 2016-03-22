@@ -23,4 +23,5 @@
 #define SYS_halt   22
 #define SYS_getmypid 23
 #define SYS_register_signal_handler 24 
-#define SYS_alarm 25 
+#define SYS_alarm 25
+#define SYS_stopTraps 26

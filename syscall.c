@@ -102,6 +102,7 @@ extern int sys_halt(void);
 extern int sys_getmypid(void);
 extern int sys_register_signal_handler(void);
 extern int sys_alarm(void);
+extern int sys_stopTraps(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -128,7 +129,8 @@ static int (*syscalls[])(void) = {
 [SYS_halt]    sys_halt,
 [SYS_getmypid] sys_getmypid,
 [SYS_register_signal_handler] sys_register_signal_handler,
-[SYS_alarm] sys_alarm
+[SYS_alarm] sys_alarm,
+[SYS_stopTraps] sys_stopTraps
 };
 
 void

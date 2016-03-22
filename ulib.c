@@ -114,6 +114,8 @@ signal(int signum, sighandler_t handler){
  return register_signal_handler(signum,handler, (uint)trampoline );
 } 
 
+
+
 void trampoline(void){
   //printf(1,"TRAMPOLINE!!\n");
         // register int eip asm ("%eip");

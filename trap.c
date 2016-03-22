@@ -82,7 +82,14 @@ trap(struct trapframe *tf)
   case T_DIVIDE :
     if( proc->sigHandlers[SIGFPE] != -1){
 	uint old_eip= proc->tf->eip; 
-	 proc->tf->eip = proc->sigHandlers[SIGFPE];
+	if(! (proc->stopTraps)){
+          // cprintf("eip address %d\n",old_eip);	
+	proc->tf->eip = proc->sigHandlers[SIGFPE];
+        //cprintf("eip sig handler address %d\n",proc->tf->eip);	
+	} else {
+          //cprintf("Stopping Traps sending back to main\n");	
+	proc->tf->eip = old_eip + 4;
+	}
 	siginfo_t info; 
 	info.signum = SIGFPE; 
 //	int decr = sizeof(info); 
@@ -113,12 +120,13 @@ trap(struct trapframe *tf)
   default:
     if(proc == 0 || (tf->cs&3) == 0){
       // In kernel, it must be our mistake.
+      //    cprintf("here 4\n");
       cprintf("unexpected trap %d from cpu %d eip %x (cr2=0x%x)\n",
               tf->trapno, cpu->id, tf->eip, rcr2());
       panic("trap");
     }
     // In user space, assume process misbehaved.
-  //cprintf("here 3\n");
+    //cprintf("here 3\n");
     cprintf("pid %d %s: trap %d err %d on cpu %d "
             "eip 0x%x addr 0x%x--kill proc\n",
             proc->pid, proc->name, tf->trapno, tf->err, cpu->id, tf->eip, 
@@ -142,9 +150,9 @@ trap(struct trapframe *tf)
 	//updateTicks(); 	
 	//cprintf("increment ticks! %d  alarm on at:%d\n", proc->numTicks, proc->alarmTicks); 	
  	if ( proc->numTicks >= proc->alarmTicks){
-		//cprintf("here:\n"); 
+          //	cprintf("here:\n"); 
 		if(proc->sigHandlers[SIGALRM] == -1){	
-		//cprintf("here 2:\n"); 	
+                  //   cprintf("here 2:\n"); 	
 			cprintf("pid %d %s: trap %d err %d on cpu %d "
             	"eip 0x%x addr 0x%x--kill proc\n",
             	proc->pid, proc->name, tf->trapno, tf->err, cpu->id, tf->eip, 
@@ -152,10 +160,16 @@ trap(struct trapframe *tf)
     		proc->killed = 1; 
 		exit(); 
 		}
-		cprintf("changing trap frame"); 
+		//cprintf("changing trap frame"); 
 		uint old_eip= proc->tf->eip; 
+		if(proc->stopTraps !=1){		
 		 proc->tf->eip = proc->sigHandlers[SIGALRM];
-		cprintf("SIGALRM value: %d\n", &(proc->sigHandlers[SIGALRM]));
+		}
+		else{
+                  //cprintf("Stopping Traps. Sending back to main.\n"); 		
+		proc->tf->eip = old_eip+4;
+		}
+		//cprintf("SIGALRM value: %d\n", &(proc->sigHandlers[SIGALRM]));
 		siginfo_t info; 
 		info.signum = SIGALRM; 
 		//int decr = sizeof(info); 
@@ -163,21 +177,21 @@ trap(struct trapframe *tf)
 		//decr += sizeof(proc->sigHandlers[SIGALRM]);       
 		//*((uint*) (proc->tf->esp-decr)) = old_eip;
 		//proc->tf->esp -=decr; 	
-	cprintf("starting editing:\n"); 
+                //cprintf("starting editing:\n"); 
         *( (uint*) (proc->tf->esp - 4)) = old_eip; // old instruction pointer added to the stack
 	*( (uint*) (proc->tf->esp - 8)) = proc->tf->eax; // put volatile registers onto the stack
-	cprintf("eax: %d\n", proc->tf->eax); 
+//	cprintf("eax: %d\n", proc->tf->eax); 
 	*( (uint*) (proc->tf->esp - 12)) = proc->tf->ecx;
-	cprintf("ecx: %d\n", proc->tf->ecx); 
+//	cprintf("ecx: %d\n", proc->tf->ecx); 
 	*( (uint*) (proc->tf->esp - 16)) = proc->tf->edx;
-	cprintf("edx: %d\n", proc->tf->edx); 
+//	cprintf("edx: %d\n", proc->tf->edx); 
 	*((siginfo_t*) (proc->tf->esp - 20)) = info;
-	cprintf("info addr: %d\n", (uint)&info); 
+//	cprintf("info addr: %d\n", (uint)&info); 
 	*( (uint*) (proc->tf->esp - 24)) = proc->restore;
-	cprintf("trampoline addr: %d\n", proc->restore); 
+//	cprintf("trampoline addr: %d\n", proc->restore); 
 	proc->tf->esp -= 24;
-	cprintf("esp: %d\n", proc->tf->esp); 
-        cprintf("eip:  %d\n", proc->tf->eip);
+//	cprintf("esp: %d\n", proc->tf->esp); 
+        //      cprintf("eip:  %d\n", proc->tf->eip);
 		proc->numTicks =0; 
 		proc->alarmTicks=0; 	
 	} 
